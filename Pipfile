@@ -11,6 +11,7 @@ factory-boy = "*"
 [packages]
 django = "~=3.2"
 psycopg2-binary = "~=2.8"
+faker = "~=8.1"
 
 [requires]
 python_version = "3.9"
