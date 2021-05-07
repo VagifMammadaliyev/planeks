@@ -5,6 +5,8 @@ services:
     postgres:
         ports:
             - '5432:5432'
+        environment:
+            - POSTGRES_PASSWORD=planeks_db_password
 
     redis:
         ports:
