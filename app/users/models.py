@@ -97,6 +97,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         if first_name or last_name:
             return f"{first_name} {last_name}".strip()
 
+
         return self.DEFAULT_FULL_NAME
 
     @classmethod
