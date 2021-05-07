@@ -15,6 +15,8 @@ SECRET_KEY = os.environ.get("DJANGO_SECREY_KEY", "insecure_secret_key")
 allowed_hosts = os.environ.get("DJANGO_ALLOWED_HOSTS")
 ALLOWED_HOSTS = allowed_hosts.split(",") if allowed_hosts else []
 
+AUTH_USER_MODEL = "users.User"
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -22,6 +24,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "users",
 ]
 
 MIDDLEWARE = [
