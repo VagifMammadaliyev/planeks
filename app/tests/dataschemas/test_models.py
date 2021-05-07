@@ -1,8 +1,9 @@
 from datetime import datetime
 
 from tests.base_classes import TestCase
-from tests.factories.users_factories import UserFactory
 from tests.factories.dataschema_factories import DataColumnFactory, DataSchemaFactory
+from tests.factories.users_factories import UserFactory
+
 from dataschemas.models import DataColumn, DataSchema
 
 
@@ -91,3 +92,65 @@ class DataColumnGenerationTestCase(TestCase):
             datetime.strptime(date, "%Y-%m-%d")
         except ValueError:
             self.assertFalse(True, f"{date} is not a valid date")
+
+
+class DateSchemaGenerationTestCase(TestCase):
+    def setUp(self):
+        self.schema = DataSchemaFactory()
+
+    def test_no_columns(self):
+        self.assertListEqual(self.schema.data_columns, [])
+
+    def test_no_columns_header(self):
+        self.assertListEqual(self.schema.get_head_row(), [])
+
+    def test_no_columns_row_generate(self):
+        self.assertListEqual(self.schema.generate_row(), [])
+
+    def test_no_columns_rows_generate(self):
+        generated_data = [
+            generated_row
+            for generated_row in self.schema.generate_rows(10, include_header=True)
+        ]
+        self.assertEqual(len(generated_data), 11, "head row is not counted")
+        all_empty = True
+        for gen_row in generated_data:
+            if gen_row:
+                all_empty = False
+                break
+        self.assertTrue(all_empty, "all generated rows must be empty")
+
+    def test_no_columns_rows_generate_no_header(self):
+        generated_data = [
+            generated_row
+            for generated_row in self.schema.generate_rows(10, include_header=False)
+        ]
+        self.assertEqual(len(generated_data), 10)
+        all_empty = True
+        for gen_row in generated_data:
+            if gen_row:
+                all_empty = False
+                break
+        self.assertTrue(all_empty, "all generated rows must be empty")
+
+    def test_one_column(self):
+        column = DataColumnFactory(schema=self.schema)
+        self.assertListEqual(self.schema.data_columns, [column])
+
+    def test_one_column_header(self):
+        column = DataColumnFactory(schema=self.schema)
+        self.assertListEqual(self.schema.get_head_row(), [column.title])
+
+    def test_one_column_row_generate(self):
+        column = DataColumnFactory(schema=self.schema)
+        gen_row = self.schema.generate_row()
+        self.assertEqual(len(gen_row), 1)
+
+    def test_one_column_rows_generate(self):
+        column = DataColumnFactory(schema=self.schema)
+        generated_data = [
+            generated_row
+            for generated_row in self.schema.generate_rows(10, include_header=True)
+        ]
+        self.assertEqual(len(generated_data), 11)
+        self.assertListEqual(generated_data[0], [column.title])
