@@ -73,7 +73,7 @@ class DataColumn(models.Model):
 
     @property
     def is_range_defined(self):
-        return self.range_from and self.range_to
+        return self.range_from is not None and self.range_to is not None
 
     @cached_property
     def _fake(self):
@@ -110,10 +110,7 @@ class DataColumn(models.Model):
 
     def _generate_random_text_value(self, min_sentences, max_sentences):
         nb_sentences = self._generate_random_integer_value(min_sentences, max_sentences)
-        text = [
-            self._fake.sentence(self._generate_random_integer_value(3, 6))
-            for _ in range(nb_sentences)
-        ]
+        text = [self._fake.sentence(10) for _ in range(nb_sentences)]
         return " ".join(text)
 
     def _generated_non_ranged_value(self):
