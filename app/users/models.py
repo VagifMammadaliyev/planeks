@@ -12,13 +12,11 @@ class UserQuerySet(models.QuerySet):
     def active(self):
         return self.filter(is_active=True)
 
-    def deactive(self):
+    def inactive(self):
         return self.filter(is_active=False)
 
     @transaction.atomic
     def _toggle_active_field(self, is_active, admin_id):
-        count = self.update(is_active=is_active)
-
         if admin_id:
             change_message = (
                 "Activated this user." if is_active else "Deactivated this user."
@@ -39,6 +37,7 @@ class UserQuerySet(models.QuerySet):
                 )
             LogEntry.objects.bulk_create(log_entries)
 
+        count = self.update(is_active=is_active)
         return count
 
     def deactivate(self, admin_id=None):
@@ -96,7 +95,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         last_name = self.last_name and self.last_name.strip()
 
         if first_name or last_name:
-            return f"{first_name} {last_name}"
+            return f"{first_name} {last_name}".strip()
 
         return self.DEFAULT_FULL_NAME
 

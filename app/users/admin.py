@@ -97,7 +97,7 @@ class UserAdmin(BaseUserAdmin):
     deactivate_action.short_description = "Deactivate selected"
 
     def activate_action(self, request, queryset):
-        count = queryset.deactive().activate(request.user.id)
+        count = queryset.inactive().activate(request.user.id)
         self.message_user(request, f"Activated {count} users", level=messages.SUCCESS)
         return self.get_redirect_to_previous_page(request)
 
