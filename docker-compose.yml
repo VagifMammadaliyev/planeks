@@ -21,6 +21,37 @@ services:
         networks:
             - planeks-app-network
 
+    app:
+        container_name: planeks_app
+        build:
+            context: .
+            dockerfile: Dockerfile.app
+        restart: 'always'
+        env_file: .env
+        volumes:
+            - planeks-media:/code/media
+        networks:
+            - planeks-app-network
+        ports:
+            - '80:80'
+        depends_on:
+            - postgres
+
+    celery:
+        container_name: planeks_celery
+        build:
+            context: .
+            dockerfile: Dockerfile.celery
+        restart: 'always'
+        env_file: .env
+        volumes:
+            - planeks-media:/code/media
+        networks:
+            - planeks-app-network
+        command: celery -A planeks worker --loglevel=INFO -Q generator
+        depends_on:
+            - redis
+
 networks:
     planeks-app-network:
         driver: bridge
@@ -28,3 +59,4 @@ networks:
 volumes:
     planeks-postgres:
     planeks-redis:
+    planeks-media:
