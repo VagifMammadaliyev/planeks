@@ -85,11 +85,17 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = "en-us"
-TIME_ZONE = "UTC"
+TIME_ZONE = os.environ.get("TIME_ZONE", "Europe/Kiev")
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = "/static/"
+MEDIA_ROOT = str((BASE_DIR / "media").absolute())
+MEDIA_URL = "/media/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+CELERY_BROKER_URL = os.environ.get("BROKER_URL", "redis://:@localhost:6379/0")
+CELERY_ENABLE_UTC = True
+CELERY_TIMEZONE = TIME_ZONE

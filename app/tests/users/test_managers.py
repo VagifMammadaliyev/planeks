@@ -1,6 +1,6 @@
 from django.contrib.admin.models import LogEntry
 
-from tests.base_classes import TestCase, TransactionTestCase
+from tests.base_classes import TestCase
 from tests.factories.users_factories import UserFactory
 from users.models import User
 

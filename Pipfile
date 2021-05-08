@@ -12,6 +12,8 @@ factory-boy = "*"
 django = "~=3.2"
 psycopg2-binary = "~=2.8"
 faker = "~=8.1"
+celery = "==5.0.5"
+redis = "~=3.5"
 
 [requires]
 python_version = "3.9"
