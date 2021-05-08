@@ -1,0 +1,55 @@
+{% extends "dashboard/base.html" %} 
+
+{% block title %}Datesets for "{{ schema.title }}"{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form method="post" action="{% url 'dashboard:schema-generate' %}">
+        {% csrf_token %}
+        {% include 'partial/form.html' with form=form %}
+        <div class="d-grid gap-2 mt-4">
+            <input class="btn btn-outline-dark" type="submit" value="Generate">
+        </div>
+    </form>
+    <table class="table mt-5">
+        {% if datasets %}
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Status</th>
+                <th scope="col">Started at</th>
+                <th scope="col">Completed at</th>
+                <th scope="col">Total seconds</th>
+                <th scope="col">Total rows</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dataset in datasets %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ dataset.visible_status }}</td>
+                <td>{{ dataset.started_generation_at }}</td>
+                <td>{{ dataset.finished_generation_at }}</td>
+                <td>{% if dataset.elapsed_time_in_seconds %}{{ dataset.elapsed_time_in_seconds }} seconds{% else %}N/A{% endif %}</td>
+                <td>{{ dataset.row_count }}</td>
+                <td>
+                    {% if dataset.is_finished %}
+                        {% if dataset.generated_file %}
+                            <a href="{{ dataset.generated_file.url }}" download>Download</a>
+                        {% else %}
+                            Oops... Something went wrong 🥵
+                        {% endif %}
+                    {% else %}
+                        You will be able to download file when it is ready
+                    {% endif %}
+                </td>
+            </tr>                
+            {% endfor %}
+        </tbody>
+        {% else %}
+        <h1 class="mt-2">Let's generate some data!</h1>
+        {% endif %}
+    </table>
+</div>
+{% endblock content %}

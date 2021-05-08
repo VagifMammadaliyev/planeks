@@ -1,0 +1,13 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="container">
+    <form method="post">
+        {% csrf_token %}
+        {% include 'partial/form.html' with form=form %}
+        <div class="d-grid gap-2 mt-4">
+            <input class="btn btn-dark" type="submit" value="Login">
+        </div>
+    </form>
+</div>
+{% endblock content %}

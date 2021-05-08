@@ -151,16 +151,26 @@ class DataColumn(models.Model):
         return self._generated_non_ranged_value()
 
     def clean(self):
-        if DataColumn.is_range_required(self.data_type) and not self.is_range_defined:
-            range_is_required = "Range is required for selected data type"
-            raise ValidationError(
-                {"range_from": range_is_required, "range_to": range_is_required}
-            )
-        elif not DataColumn.is_range_required(self.data_type) and self.is_range_defined:
-            range_is_not_required = "Range is not required for selected data type"
-            raise ValidationError(
-                {"range_from": range_is_not_required, "range_to": range_is_not_required}
-            )
+        if self.data_type:
+            if (
+                DataColumn.is_range_required(self.data_type)
+                and not self.is_range_defined
+            ):
+                range_is_required = "Range is required for selected data type"
+                raise ValidationError(
+                    {"range_from": range_is_required, "range_to": range_is_required}
+                )
+            elif (
+                not DataColumn.is_range_required(self.data_type)
+                and self.is_range_defined
+            ):
+                range_is_not_required = "Range is not required for selected data type"
+                raise ValidationError(
+                    {
+                        "range_from": range_is_not_required,
+                        "range_to": range_is_not_required,
+                    }
+                )
 
         if self.is_range_defined and self.range_from == self.range_to:
             range_from_is_same_as_range_to = "Range from cannot be same as range to"
