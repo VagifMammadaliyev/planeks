@@ -19,3 +19,12 @@ class DataColumnFactory(DjangoModelFactory):
     schema = factory.SubFactory(DataSchemaFactory)
     title = factory.Faker("pystr", min_chars=10, max_chars=10)
     data_type = dm.DataColumn.FULL_NAME_DATA_TYPE
+
+
+class DataSetFactory(DjangoModelFactory):
+    class Meta:
+        model = dm.DataSet
+
+    schema = factory.SubFactory(DataSchemaFactory)
+    generated_file = factory.django.FileField(filename="generated_file_name")
+    row_count = 1
