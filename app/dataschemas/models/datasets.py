@@ -19,6 +19,7 @@ class DataSetManager(models.Manager):
         dataset = self.create(schema=dataschema, row_count=row_count)
         if generate_file:
             generate_csv.delay(dataset.id)
+        return dataset
 
 
 class DataSet(models.Model):
