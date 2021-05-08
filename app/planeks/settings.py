@@ -91,6 +91,7 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+STATIC_ROOT = str((BASE_DIR / "static").absolute())
 STATIC_URL = "/static/"
 MEDIA_ROOT = str((BASE_DIR / "media").absolute())
 MEDIA_URL = "/media/"
@@ -104,3 +105,7 @@ CELERY_TIMEZONE = TIME_ZONE
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 LOGIN_URL = "/login/"
+
+if PROD:
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
