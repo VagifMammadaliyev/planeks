@@ -1,0 +1,26 @@
+<div class="div">{{ form.non_field_errors }}</div>
+<div class="div">
+    {% for hidden_field in form.hidden_fields %}
+        {% if hidden_field.errors %}
+            <div style="color: red;">
+                {% for error in hidden_field.errors %}
+                {{ error|escape }}<br>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {{ hidden_field }}
+    {% endfor %}
+</div>
+<div>
+    {% for field in form.visible_fields %}
+        <label for="{{ field.id_for_label }}"><b>{{ field.label }}:</b></label>
+        {{ field }}
+        {% if field.errors %}
+        <div style="color: red;">
+            {% for error in field.errors %}
+            {{ error|escape }}<br>
+            {% endfor %}
+        </div>
+        {% endif %} 
+    {% endfor %}
+</div>

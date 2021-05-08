@@ -1,0 +1,38 @@
+{% extends "dashboard/base.html" %} {% block content %}
+<div class="container">
+    <a
+        href="{% url 'dashboard:schema-create' %}"
+        class="btn btn-outline-dark mt-5"
+        >New schema</a
+    >
+    <table class="table">
+        {% if dataschemas %}
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Created at</th>
+                <th scope="col">Updated at</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dataschema in dataschemas %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td><a href="{% url 'dashboard:schema-datasets' dataschema.pk %}">{{ dataschema.title }}</a></td>
+                <td>{{ dataschema.created_at }}</td>
+                <td>{{ dataschema.updated_at }}</td>
+                <td>
+                    <a href="{% url 'dashboard:schema-update' dataschema.pk %}">Edit</a>
+                    <a class="text-danger" href="{% url 'dashboard:schema-delete' dataschema.pk %}">Remove</a>
+                </td>
+            </tr>                
+            {% endfor %}
+        </tbody>
+        {% else %}
+        <h1 class="mt-2">What? Not even one schema exists. What are you waiting for? 🤨</h1>
+        {% endif %}
+    </table>
+</div>
+{% endblock content %}

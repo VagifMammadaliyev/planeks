@@ -6,6 +6,7 @@ from django.core.files.base import ContentFile
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils import timezone
+from django.utils.functional import cached_property
 
 from .dataschema import DataSchema
 from ..tasks import generate_csv
@@ -58,7 +59,7 @@ class DataSet(models.Model):
         return self.is_started and not self.is_finished
 
     def _generate_file_name(self):
-        return f"{self.schema.title}_{str(uuid.uuid4())}"
+        return f"{self.schema.title}_{str(uuid.uuid4())}.csv"
 
     def aknowledge_start(self):
         self.started_generation_at = timezone.now()
@@ -81,3 +82,18 @@ class DataSet(models.Model):
         return (
             self.finished_generation_at - self.started_generation_at
         ).total_seconds()
+
+    @property
+    def visible_status(self):
+        if self.is_finished:
+            return "Finished ✅"
+        else:
+            return "Not ready ❌"
+
+    @cached_property
+    def elapsed_time_in_seconds(self):
+        if self.is_finished:
+            return (
+                self.finished_generation_at - self.started_generation_at
+            ).total_seconds()
+        return None
