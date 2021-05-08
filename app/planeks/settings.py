@@ -7,10 +7,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 PROD = not DEBUG
 
-secret_key = os.environ.get("DJANGO_SECREY_KEY")
+secret_key = os.environ.get("DJANGO_SECRET_KEY")
 if PROD and not secret_key:
     raise ValueError("Secret key must be set in PROD mode!")
-SECRET_KEY = os.environ.get("DJANGO_SECREY_KEY", "insecure_secret_key")
+SECRET_KEY = secret_key or "insecure_secret_key"
 
 allowed_hosts = os.environ.get("DJANGO_ALLOWED_HOSTS")
 ALLOWED_HOSTS = allowed_hosts.split(",") if allowed_hosts else []
