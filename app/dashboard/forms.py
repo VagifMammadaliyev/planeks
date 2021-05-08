@@ -1,6 +1,15 @@
 from django import forms
 from django.forms import modelformset_factory
+from django.contrib.auth.forms import AuthenticationForm
+
 from dataschemas.models import DataSchema, DataColumn
+
+
+class LoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name in self.fields:
+            self.fields[field_name].widget.attrs["class"] = "form-control"
 
 
 class DataSchemaForm(forms.ModelForm):

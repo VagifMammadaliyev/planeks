@@ -1,4 +1,5 @@
 from django import views
+from django.contrib.auth.views import LoginView as BaseLoginView
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.shortcuts import get_object_or_404, render
@@ -7,7 +8,12 @@ from django.utils.decorators import method_decorator
 from django.views import generic
 
 from dataschemas.models import DataColumn, DataSchema, DataSet
-from .forms import DataColumnFormSet, DataSchemaForm, GenerateDataSetForm
+from .forms import DataColumnFormSet, DataSchemaForm, GenerateDataSetForm, LoginForm
+
+
+class LoginView(BaseLoginView):
+    form_class = LoginForm
+    template_name = "dashboard/login.html"
 
 
 class HomeView(generic.RedirectView):
