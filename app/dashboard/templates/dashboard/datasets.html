@@ -36,7 +36,7 @@
                 <td>
                     {% if dataset.is_finished %}
                         {% if dataset.generated_file %}
-                            <a href="{{ dataset.generated_file.url }}" download>Download</a>
+                            <a href="{{ dataset.generated_file.url }}" download="{{ dataset.generated_file.name }}">Download</a>
                         {% else %}
                             Oops... Something went wrong 🥵
                         {% endif %}

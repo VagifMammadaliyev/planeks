@@ -7,10 +7,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 PROD = not DEBUG
 
-secret_key = os.environ.get("DJANGO_SECREY_KEY")
+secret_key = os.environ.get("DJANGO_SECRET_KEY")
 if PROD and not secret_key:
     raise ValueError("Secret key must be set in PROD mode!")
-SECRET_KEY = os.environ.get("DJANGO_SECREY_KEY", "insecure_secret_key")
+SECRET_KEY = secret_key or "insecure_secret_key"
 
 allowed_hosts = os.environ.get("DJANGO_ALLOWED_HOSTS")
 ALLOWED_HOSTS = allowed_hosts.split(",") if allowed_hosts else []
@@ -91,6 +91,7 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+STATIC_ROOT = str((BASE_DIR / "static").absolute())
 STATIC_URL = "/static/"
 MEDIA_ROOT = str((BASE_DIR / "media").absolute())
 MEDIA_URL = "/media/"
@@ -100,7 +101,26 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CELERY_BROKER_URL = os.environ.get("BROKER_URL", "redis://:@localhost:6379/0")
 CELERY_ENABLE_UTC = True
 CELERY_TIMEZONE = TIME_ZONE
+CELERY_BROKER_POOL_LIMIT = None
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 LOGIN_URL = "/login/"
+
+if PROD:
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_SSL_REDIRECT = True
+
+    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+    STATICFILES_STORAGE = "storages.backends.s3boto3.S3StaticStorage"
+    AWS_S3_ENDPOINT_URL = os.environ.get(
+        "AWS_S3_ENDPOINT_URL", "https://cloud-cube-us2.s3.amazonaws.com/z1psjee6lj4h"
+    )
+    AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
+    AWS_DEFAULT_ACL = "public-read"
+    AWS_LOCATION = "public"
+    AWS_QUERYSTRING_AUTH = False

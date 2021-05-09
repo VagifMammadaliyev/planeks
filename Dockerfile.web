@@ -1,0 +1,29 @@
+FROM python:3.9.5-alpine
+
+ENV PYTHONUNBUFFERED 1
+
+WORKDIR /code
+
+COPY Pipfile Pipfile
+
+COPY Pipfile.lock Pipfile.lock
+
+RUN \
+    apk add linux-headers && \
+    apk add --no-cache postgresql-libs && \
+    apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev
+
+RUN \
+    pip install --upgrade pip \
+    && pip install pipenv \
+    && pipenv install --system --deploy --ignore-pipfile --clear
+
+RUN apk --purge del .build-deps
+
+COPY uwsgi.ini uwsgi.ini
+
+COPY ./app .
+
+RUN python manage.py collectstatic --noinput
+
+CMD ["uwsgi", "--ini", "uwsgi.ini"]
