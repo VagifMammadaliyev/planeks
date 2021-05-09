@@ -25,7 +25,7 @@ services:
         container_name: planeks_app
         build:
             context: .
-            dockerfile: Dockerfile.app
+            dockerfile: Dockerfile.web
         restart: 'always'
         env_file: .env
         volumes:
@@ -41,7 +41,7 @@ services:
         container_name: planeks_celery
         build:
             context: .
-            dockerfile: Dockerfile.celery
+            dockerfile: Dockerfile.worker
         restart: 'always'
         env_file: .env
         volumes:
