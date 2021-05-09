@@ -118,11 +118,9 @@ if PROD:
     AWS_S3_ENDPOINT_URL = os.environ.get(
         "AWS_S3_ENDPOINT_URL", "https://cloud-cube-us2.s3.amazonaws.com/z1psjee6lj4h"
     )
-    AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "AKIA37SVVXBH63P2R4O4")
-    AWS_SECRET_ACCESS_KEY = os.environ.get(
-        "AWS_SECRET_ACCESS_KEY", "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"
-    )
-    AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME", "z1psjee6lj4h")
+    AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
     AWS_DEFAULT_ACL = "public-read"
     AWS_LOCATION = "public"
     AWS_QUERYSTRING_AUTH = False
