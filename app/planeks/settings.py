@@ -111,3 +111,17 @@ if PROD:
     CSRF_COOKIE_SECURE = True
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
     SECURE_SSL_REDIRECT = True
+
+    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+    STATICFILES_STORAGE = "storages.backends.s3boto3.S3StaticStorage"
+    AWS_S3_ENDPOINT_URL = os.environ.get(
+        "AWS_S3_ENDPOINT_URL", "https://cloud-cube-us2.s3.amazonaws.com/z1psjee6lj4h"
+    )
+    AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "AKIA37SVVXBH63P2R4O4")
+    AWS_SECRET_ACCESS_KEY = os.environ.get(
+        "AWS_SECRET_ACCESS_KEY", "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"
+    )
+    AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME", "z1psjee6lj4h")
+    AWS_DEFAULT_ACL = "public-read"
+    AWS_LOCATION = "public"
+    AWS_QUERYSTRING_AUTH = False

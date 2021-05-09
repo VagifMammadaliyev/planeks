@@ -77,7 +77,7 @@ class DataSet(models.Model):
             writer.writerow(generated_row)
         stream.seek(0)
         file_name = self._generate_file_name()
-        self.generated_file.save(file_name, ContentFile(stream.read()))
+        self.generated_file.save(file_name, ContentFile(stream.read().encode()))
         self.aknowledge_completion()
         return (
             self.finished_generation_at - self.started_generation_at
